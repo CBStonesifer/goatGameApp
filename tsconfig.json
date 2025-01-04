@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "app/_layout.jsx", "app/Description.jsx", "app/index.jsx", "app/HostGame.jsx", "app/JoinGame.jsx", "FirebaseConfig.js", "app/GameContext.jsx"  ]
 }
