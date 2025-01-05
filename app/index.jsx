@@ -1,38 +1,36 @@
 import { router } from "expo-router";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState } from "react";
 import { Button, Text, View, StyleSheet } from "react-native";
 import HostGame from "./HostGame"
 import JoinGame from "./JoinGame"
-import GameContextProvider from './GameContext'
+import GameContextProvider from '../context/GameContext'
 
 function HomeScreen() {
   const [showHost, setHostOrJoin] = useState(true);
   
   return (
-    <GameContextProvider>
-      <View style={styles.container}>
-        {/* Top Section */}
-        <View style={styles.topSection}>
-        <Button
-          title="How to Play"
-          onPress={() => router.push('/Description')}
-        />
-        </View>
-
-        {/* Middle Section */}
-        <View style={styles.middleSection}>
-          {showHost ? <HostGame /> : <JoinGame />}
-        </View>
-
-        {/* Bottom Section */}
-        <View style={styles.bottomSection}>
-          <Button 
-            title={showHost ? "Switch to Join": "Switch to Host"}
-            onPress={() => setHostOrJoin(!showHost)} 
-          />
-        </View>
+    <View style={styles.container}>
+      {/* Top Section */}
+      <View style={styles.topSection}>
+      <Button
+        title="How to Play"
+        onPress={() => router.push('/Description')}
+      />
       </View>
-    </GameContextProvider>
+
+      {/* Middle Section */}
+      <View style={styles.middleSection}>
+        {showHost ? <HostGame /> : <JoinGame />}
+      </View>
+
+      {/* Bottom Section */}
+      <View style={styles.bottomSection}>
+        <Button 
+          title={showHost ? "Switch to Join": "Switch to Host"}
+          onPress={() => setHostOrJoin(!showHost)} 
+        />
+      </View>
+    </View>
   );
 }
 

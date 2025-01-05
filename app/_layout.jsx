@@ -1,10 +1,12 @@
 import { Stack } from "expo-router";
-import Description from "./Description";
+import GameContextProvider from '../context/GameContext';
 
 export default function RootLayout() {
   return (
-  <Stack>
-    <Stack.Screen name="index" options={{ headerShown: false }} />
-    <Stack.Screen name="Description" options={{ headerShown: false }} />
-  </Stack>);
+  <GameContextProvider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="Description" options={{ headerShown: false }} />
+    </Stack>
+  </GameContextProvider>);
 }

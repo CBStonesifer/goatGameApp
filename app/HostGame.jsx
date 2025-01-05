@@ -4,13 +4,12 @@ import { addDoc, collection } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { useGameContext } from './GameContext'
+import { useGameContext } from '../context/GameContext'
 
 function HostGame(){
-    const {gameCode , setGameCode} = useGameContext()
+    const { updateGameData } = useGameContext()
     const[gameHost, setGameHost] = useState('')
-    const[gameCategory, setgameCategory] = useState('')
-
+    const[gameCategory, setGameCategory] = useState('')
 
     //firebase function to create new game: need to develop a Game Class for the schema
     //  //will need to also create a player class to be added into the Game Class
@@ -22,28 +21,25 @@ function HostGame(){
             let randomIndex = String.fromCharCode(Math.floor(Math.random() * (90 - 65 + 1)) + 65);
             result += randomIndex;
         }
-        setGameCode(result)
+        return result
     }
 
     async function createGame(){
-        generateGameCode()
-        console.log(gameCode)
-        const game = {
-            game_code: gameCode,
-            game_host: gameHost,
-            game_Category: gameCategory
+      newCode = generateGameCode()
+      const game = {
+        game_code: newCode,
+        host: gameHost,
+        category: gameCategory
+      }
+      console.log(game)
+      try {
+          const docRef = await addDoc(collection(db, "game-sessions"), {game});
+          updateGameData(game)
+          router.push('/Description')
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          console.error("Error adding document: ", e);
         }
-        try {
-            const docRef = await addDoc(collection(db, "game-sessions"), {
-              game
-            });
-            router.push('/Description')
-            console.log("Document written with ID: ", docRef.id);
-            console.log('Entered Lobby')
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-
     }
 
   return (
@@ -56,12 +52,13 @@ function HostGame(){
       {/* Middle Section */}
       <View style={spacing.middleSection}>
             <TextInput style={styles.input} placeholder="Username" value={gameHost} onChangeText={setGameHost}/>
-            <TextInput style={styles.input} placeholder="Category" value={gameCategory} onChangeText={setgameCategory}/>
+            <TextInput style={styles.input} placeholder="Category" value={gameCategory} onChangeText={setGameCategory}/>
             <Button
                 title="Create Game"
                 onPress={() => {
-                    createGame()
-                }}
+                  generateGameCode()
+                  createGame()}
+                }
             />
       </View>
 
