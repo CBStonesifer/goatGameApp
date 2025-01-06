@@ -6,7 +6,7 @@ export default function RootLayout() {
   <GameContextProvider>
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="Description" options={{ headerShown: false }} />
+      <Stack.Screen name="screens" options={{ headerShown: false }} />
     </Stack>
   </GameContextProvider>);
 }

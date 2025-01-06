@@ -1,33 +1,25 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { Button, Text, View, StyleSheet } from "react-native";
-import HostGame from "./components/HostGame"
-import JoinGame from "./components/JoinGame"
+import { useGameContext } from '../../context/GameContext';
+import { View, Text, TextInput, Button, Dimensions, StyleSheet } from "react-native";
 
-function HomeScreen() {
-  const [showHost, setHostOrJoin] = useState(true);
-  
+function Lobby(){
+
+  const { gameModel } = useGameContext()
+
   return (
     <View style={styles.container}>
       {/* Top Section */}
       <View style={styles.topSection}>
-      <Button
-        title="How to Play"
-        onPress={() => router.push('./screens/Description')}
-      />
       </View>
 
       {/* Middle Section */}
       <View style={styles.middleSection}>
-        {showHost ? <HostGame /> : <JoinGame />}
+        <Text>{gameModel.game_code}</Text>
+        <Text>Waiting for players</Text>
       </View>
 
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
-        <Button 
-          title={showHost ? "Switch to Join": "Switch to Host"}
-          onPress={() => setHostOrJoin(!showHost)} 
-        />
+        
       </View>
     </View>
   );
@@ -64,4 +56,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+export default Lobby;

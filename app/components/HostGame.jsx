@@ -4,7 +4,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { useGameContext } from '../context/GameContext'
+import { useGameContext } from '../../context/GameContext'
 
 function HostGame(){
     const { updateGameData } = useGameContext()
@@ -35,7 +35,7 @@ function HostGame(){
       try {
           const docRef = await addDoc(collection(db, "game-sessions"), {game});
           updateGameData(game)
-          router.push('/Description')
+          router.replace('../screens/Lobby')
           console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);
