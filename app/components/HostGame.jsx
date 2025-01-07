@@ -1,6 +1,6 @@
 import { db } from "@/FirebaseConfig";
 import { router } from "expo-router";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc, collection } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
@@ -29,11 +29,14 @@ function HostGame(){
       const game = {
         game_code: newCode,
         host: gameHost,
-        category: gameCategory
+        category: gameCategory,
+        players: {}
       }
       console.log(game)
       try {
-          const docRef = await addDoc(collection(db, "game-sessions"), {game});
+          const docRef = doc(db, "game-sessions", newCode);
+          await setDoc(docRef, game)
+          //const docRef = await addDoc(collection(db,"game-sessions"), game);
           updateGameData(game)
           router.replace('../screens/Lobby')
           console.log("Document written with ID: ", docRef.id);

@@ -6,7 +6,8 @@ export default function GameContextProvider ({children}){
     const [gameModel, setGameModel] = useState({
         category: '',
         host: '',
-        game_code: ''
+        game_code: '',
+        players: {}
     });
 
     // Add any methods you want to expose
