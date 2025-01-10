@@ -28,24 +28,24 @@ function Lobby(){
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Full screen height
+    flex: 1,
     backgroundColor: '#f8f8f8',
   },
   topSection: {
     paddingTop:60,
-    flex: 1, // Takes 1/3 of the screen
+    flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     backgroundColor: '#ffcccb',
   },
   middleSection: {
-    flex: 6, // Takes 2/3 of the screen
+    flex: 6,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#add8e6',
   },
   bottomSection: {
-    flex: 1, // Takes 1/3 of the screen
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#90ee90',

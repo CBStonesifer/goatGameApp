@@ -1,27 +1,26 @@
 import React, { createContext, useContext, useState } from "react";
+import Game from '../app/classes/Game'
 
 export const GameContext = createContext();
 
 export default function GameContextProvider ({children}){
-    const [gameModel, setGameModel] = useState({
-        category: '',
-        host: '',
-        game_code: '',
-        players: {}
-    });
+    const [gameModel, setGameModel] = useState(new Game());
+    // instantiate local player: create Player Class
 
-    // Add any methods you want to expose
-    function updateGameData(gameData){
-        setGameModel(prevGameData => ({
-            ...prevGameData,
-            ...gameData
-        }));
+    async function createGameData(game_code, status, category, host){
+        const newGame = new Game()
+        try{
+            await newGame.instantiateGame(game_code, status, category, host).then(()=>{
+                setGameModel(newGame)
+            })
+        } catch (e){
+            console.error('Failed to save state to firebase')
+        }
     };
 
-    // Value object that will be available to consumers
     const value = {
         gameModel,
-        updateGameData,
+        createGameData,
     };
 
     return (
@@ -31,7 +30,6 @@ export default function GameContextProvider ({children}){
     );
 };
 
-// Custom hook for using this context
 export function useGameContext() {
     const context = useContext(GameContext);
     if (!context) {

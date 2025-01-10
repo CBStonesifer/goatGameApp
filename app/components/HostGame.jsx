@@ -1,18 +1,13 @@
-import { db } from "@/FirebaseConfig";
 import { router } from "expo-router";
-import { doc, setDoc, collection } from "firebase/firestore";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 import { useGameContext } from '../../context/GameContext'
 
 function HostGame(){
-    const { updateGameData } = useGameContext()
+    const { createGameData } = useGameContext()
     const[gameHost, setGameHost] = useState('')
     const[gameCategory, setGameCategory] = useState('')
-
-    //firebase function to create new game: need to develop a Game Class for the schema
-    //  //will need to also create a player class to be added into the Game Class
 
     //to be replaced with a FireBase Function that can check no repeat codes
     function generateGameCode(){
@@ -26,20 +21,9 @@ function HostGame(){
 
     async function createGame(){
       newCode = generateGameCode()
-      const game = {
-        game_code: newCode,
-        host: gameHost,
-        category: gameCategory,
-        players: {}
-      }
-      console.log(game)
       try {
-          const docRef = doc(db, "game-sessions", newCode);
-          await setDoc(docRef, game)
-          //const docRef = await addDoc(collection(db,"game-sessions"), game);
-          updateGameData(game)
+          createGameData(newCode, 'waiting', gameCategory, gameHost)
           router.replace('../screens/Lobby')
-          console.log("Document written with ID: ", docRef.id);
         } catch (e) {
           console.error("Error adding document: ", e);
         }

@@ -33,13 +33,13 @@ function JoinGame(){
       input: {
         height: 50,
         width: width/1.5,
-        borderColor: '#ddd',   // Light gray border
+        borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 15,
         marginBottom: 10,
-        backgroundColor: '#fff',  // White background
-        color: '#000',            // Black text color
+        backgroundColor: '#fff',
+        color: '#000',
         fontSize: 16,
       },
       text: {
@@ -51,23 +51,23 @@ function JoinGame(){
     const spacing = StyleSheet.create({
         container: {
             width: width,
-            flex: 2, // Full screen height
+            flex: 2,
             backgroundColor: '#f8f8f8',
           },
         topSection: {
-            flex: 2, // Takes 1/3 of the screen
+            flex: 2,
             justifyContent: 'flex-end',
             alignItems: 'flex-start',
             backgroundColor: '#aacccb',
         },
         middleSection: {
-            flex: 6, // Takes 2/3 of the screen
+            flex: 6,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#add8e6',
         },
         bottomSection: {
-            flex: 0.1, // Takes 1/3 of the screen
+            flex: 0.1,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#90ee90',
