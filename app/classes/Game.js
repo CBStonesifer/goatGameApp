@@ -12,18 +12,15 @@ class Game {
         }
     }
 
-    async instantiateGame(game_code, status, category, host){
+    async instantiateGame(game_code, status, category, player){
         this.game_code = game_code
         this.state.status = status
         this.state.category = category
-        this.state.host = host
-        this.state.players[host] = {
-            balance: 10,
-            entires: [],
-            bids:[]
-        }
+        this.state.host = player.username
+        this.state.players[player.username] = player.state
         try {
             const gameRef = doc(db, "game-sessions", this.game_code);
+            console.log(JSON.stringify(this.state))
             await setDoc(gameRef, this.state);
             console.log("Game Created", this.game_code)
         } catch (e) {

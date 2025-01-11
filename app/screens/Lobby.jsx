@@ -14,7 +14,10 @@ function Lobby(){
       {/* Middle Section */}
       <View style={styles.middleSection}>
         <Text>{gameModel.game_code}</Text>
-        <Text>Waiting for players</Text>
+        <Text>Waiting for players...</Text>
+        {Object.entries(gameModel.state.players).map(([username, playerData]) => (
+                <Text index={username} >{username}</Text>
+            ))}
       </View>
 
       {/* Bottom Section */}
