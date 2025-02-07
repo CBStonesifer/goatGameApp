@@ -1,7 +1,23 @@
 import { router } from "expo-router";
+import { useState } from "react";
 import { View, Text, TextInput, Button, Dimensions, StyleSheet } from "react-native";
+import { useGameContext } from '../../context/GameContext'
+
 
 function JoinGame(){
+  const { joinGameData } = useGameContext()
+  const[localPlayer, setLocalPlayer] = useState('')
+  const[gameCode, setGameCode] = useState('')
+
+  async function joinGame(){
+    try {
+        joinGameData(gameCode, localPlayer)
+        router.replace('../screens/Lobby')
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+  }
+
   return (
       <View style={spacing.container}>
         {/* Top Section */}
@@ -11,13 +27,13 @@ function JoinGame(){
   
         {/* Middle Section */}
         <View style={spacing.middleSection}>
-              <TextInput style={styles.input} placeholder="Username">
+              <TextInput style={styles.input} placeholder="Username" value={localPlayer} onChangeText={setLocalPlayer}>
               </TextInput>
-              <TextInput style={styles.input} placeholder="Game Code">
+              <TextInput style={styles.input} placeholder="Game Code" value={gameCode} onChangeText={setGameCode}>
               </TextInput>
               <Button
                   title="Join Game"
-                  onPress={() => router.push('/Description')}
+                  onPress={() => joinGame()}
               />
         </View>
   

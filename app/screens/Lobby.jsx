@@ -1,9 +1,19 @@
 import { useGameContext } from '../../context/GameContext';
-import { View, Text, TextInput, Button, Dimensions, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { useEffect } from 'react'
+
+
 
 function Lobby(){
 
-  const { gameModel } = useGameContext()
+  const { gameModel, followDocument } = useGameContext()
+
+  useEffect(() => {
+    const unsubscribe = followDocument();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [gameModel]);
 
   return (
     <View style={styles.container}>
@@ -15,8 +25,12 @@ function Lobby(){
       <View style={styles.middleSection}>
         <Text>{gameModel.game_code}</Text>
         <Text>Waiting for players...</Text>
-        {Object.entries(gameModel.state.players).map(([username, playerData]) => (
-                <Text index={username} >{username}</Text>
+        {Object.entries(gameModel.state.players).map(([username, playerData], index) => (
+                <Text 
+                key={`player-${username}-${index}`} 
+                index={username}>
+                  {username}
+                </Text>
             ))}
       </View>
 
