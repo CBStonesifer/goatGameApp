@@ -25,7 +25,7 @@ class Game {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
-    }
+    };
 
     async loadGame(game_code, player){
         try {
@@ -40,11 +40,13 @@ class Game {
                     players: this.state.players
                 });
                 console.log("Game Joined", this.game_code)
+            } else {
+                console.log("No game found")
             }
         } catch (e) {
             console.error("Error finding document: ",game_code,'->',e);
         }
-    }
+    };
 }
 
 export default Game;

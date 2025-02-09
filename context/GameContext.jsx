@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import Game from '../app/classes/Game'
 import Player from '../app/classes/Player'
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from "@/FirebaseConfig";
 
 export const GameContext = createContext();
@@ -35,17 +35,32 @@ export default function GameContextProvider ({children}){
             console.error('Failed to save state to firebase')
         }
     };
+    
+
+    async function updateGameState(payload){
+        try{
+            if (gameModel.game_code != ''){
+                try {
+                    const docRef = doc(db, 'game-sessions', gameModel.game_code);
+                    updateDoc(docRef, payload);
+                } catch { 
+                    console.error("Error updating document: ",gameModel.game_code,'->',e);
+                }}
+            } catch {
+            console.error('Failed to update state to firebase  ->')
+        }
+    };
 
     function followDocument(){
         if(gameModel.game_code) {
-            const docRef = doc(db, 'game-sessions', gameModel.game_code);
+            const docRef = doc(db, 'game-sessions', gameModel.game_code)
             
             const unsubscribe = onSnapshot(docRef, (snapshot) => {
                 if (snapshot.exists()) {
                     // const currentTime = new Date();
                     // console.log(currentTime.toLocaleTimeString(), ': pre->', gameModel.state)
                     // console.log(currentTime.toLocaleTimeString(), ': new->', snapshot.data())
-                    if(JSON.stringify(gameModel.state) != JSON.stringify(snapshot.data())){
+                    if(JSON.stringify(gameModel.state) !== JSON.stringify(snapshot.data())){
                         setGameModel(prevgameModel =>({
                             ...prevgameModel,
                             state: snapshot.data()
@@ -55,7 +70,6 @@ export default function GameContextProvider ({children}){
                     console.log(gameModel.game_code, ' -> Document not found');
                 }
             });
-
             return () => unsubscribe();
         }
     };
@@ -65,6 +79,7 @@ export default function GameContextProvider ({children}){
         local_player,
         createGameData,
         joinGameData,
+        updateGameState,
         followDocument,
     };
 
