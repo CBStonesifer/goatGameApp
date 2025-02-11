@@ -10,12 +10,12 @@ function JoinGame(){
   const[gameCode, setGameCode] = useState('')
 
   async function joinGame(){
-    try {
-        joinGameData(gameCode, localPlayer)
-        router.replace('../screens/Lobby')
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      await joinGameData(gameCode, localPlayer).then((message) => {
+          console.log(message)
+          router.replace('../screens/Lobby')
+      }).catch((error) =>{
+          console.log('Cannot join game:', error)
+      })
   }
 
   return (

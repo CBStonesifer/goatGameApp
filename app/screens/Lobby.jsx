@@ -1,23 +1,29 @@
 import { useGameContext } from '../../context/GameContext';
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
-import { useEffect } from 'react'
 import { router } from "expo-router";
 
 function Lobby(){
 
-  const { gameModel, followDocument, local_player, updateGameState } = useGameContext()
-
-  useEffect(() => {
-    const unsubscribe = followDocument();
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, [gameModel]);
+  const { gameModel, resetGame, local_player, updateGameState } = useGameContext()
 
   return (
     <View style={styles.container}>
       {/* Top Section */}
       <View style={styles.topSection}>
+      <Button
+                title="Exit"
+                onPress={() => {
+                  if(local_player.username !== gameModel.state.host){
+                    resetGame()
+                    console.log('Player ', local_player.username, ' left')
+                  }
+                  else{
+                    console.log('Game Ended')
+                    updateGameState({'status':'gameOver'})
+                  }
+                  router.replace('/')
+                }}
+            />
       </View>
 
       {/* Middle Section */}
@@ -39,7 +45,7 @@ function Lobby(){
                 title="Start Game"
                 onPress={() => {
                   updateGameState({'status':'inGame'})
-                  //router.replace('../screens/Entries')
+                  router.replace('../screens/Entries')
                 }}
             /> :null}
       </View>

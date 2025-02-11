@@ -3,12 +3,19 @@ import Game from '../app/classes/Game'
 import Player from '../app/classes/Player'
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from "@/FirebaseConfig";
+import { router } from "expo-router";
 
 export const GameContext = createContext();
 
 export default function GameContextProvider ({children}){
     const [gameModel, setGameModel] = useState(new Game());
     const [local_player, setPlayer] = useState(new Player());
+
+    function resetGame(){
+        gameModel.removePlayer(local_player.username)
+        setGameModel(new Game())
+        setPlayer(new Player())
+    }
 
     async function createGameData(game_code, status, category, host){
         const newGame = new Game()
@@ -26,14 +33,13 @@ export default function GameContextProvider ({children}){
     async function joinGameData(game_code, player){
         const newGame = new Game()
         const newPlayer = new Player(player)
-        try{
-            await newGame.loadGame(game_code, newPlayer).then(()=>{
-                setGameModel(newGame)
-                setPlayer(newPlayer)
-            })
-        } catch (e){
-            console.error('Failed to save state to firebase')
-        }
+        await newGame.loadGame(game_code, newPlayer).then((message)=>{
+            setGameModel(newGame)
+            setPlayer(newPlayer)
+            return Promise.resolve(message);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
     };
     
 
@@ -81,7 +87,20 @@ export default function GameContextProvider ({children}){
         joinGameData,
         updateGameState,
         followDocument,
+        resetGame,
     };
+
+    useEffect(() => {
+        if (gameModel.state.status == 'gameOver'){
+            setGameModel(new Game())
+            setPlayer(new Player())
+            router.replace('/')
+        }
+        const unsubscribe = followDocument();
+        return () => {
+          if (unsubscribe) unsubscribe();
+        };
+      }, [gameModel]);
 
     return (
         <GameContext.Provider value={externalContext}>
