@@ -1,0 +1,2 @@
+import { functions } from "@/FirebaseConfig";
+

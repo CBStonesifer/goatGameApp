@@ -91,16 +91,28 @@ export default function GameContextProvider ({children}){
     };
 
     useEffect(() => {
-        if (gameModel.state.status == 'gameOver'){
-            setGameModel(new Game())
-            setPlayer(new Player())
-            router.replace('/')
-        }
+        console.log('Document Changed')
         const unsubscribe = followDocument();
         return () => {
           if (unsubscribe) unsubscribe();
         };
       }, [gameModel]);
+
+      useEffect(() => {
+        console.log('State Changed')
+        if (gameModel.state.status == 'gameOver'){
+            setGameModel(new Game())
+            setPlayer(new Player())
+            router.replace('/')
+        }
+        if (gameModel.state.status == 'inGame'){
+            router.replace('../screens/Entries')
+        }
+        const unsubscribe = followDocument();
+        return () => {
+          if (unsubscribe) unsubscribe();
+        };
+      }, [gameModel.state.status]);
 
     return (
         <GameContext.Provider value={externalContext}>

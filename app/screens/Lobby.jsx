@@ -45,7 +45,6 @@ function Lobby(){
                 title="Start Game"
                 onPress={() => {
                   updateGameState({'status':'inGame'})
-                  router.replace('../screens/Entries')
                 }}
             /> :null}
       </View>

@@ -4,6 +4,7 @@ class Player {
         this.state ={
             bids: [],
             entries: [],
+            readyUp: false,
             balance: 10
         }
     }
