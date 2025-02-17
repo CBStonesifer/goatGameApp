@@ -108,6 +108,9 @@ export default function GameContextProvider ({children}){
         if (gameModel.state.status == 'inGame'){
             router.replace('../screens/Entries')
         }
+        if (gameModel.state.status == 'inAuction'){
+            router.replace('../screens/Auction')
+        }
         const unsubscribe = followDocument();
         return () => {
           if (unsubscribe) unsubscribe();

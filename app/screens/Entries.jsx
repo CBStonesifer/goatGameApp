@@ -1,6 +1,7 @@
 import { useGameContext } from '../../context/GameContext';
 import { View, Text, TextInput, Button, StyleSheet, Dimensions } from "react-native";
 import { useEffect, useState } from 'react'
+import { Timestamp } from 'firebase/firestore';
 
 function Entries(){
 
@@ -26,14 +27,18 @@ function Entries(){
     let startAuction = true
     if(local_player.username == gameModel.state.host & gameModel.state.status == 'inGame'){
       console.log(gameModel.state.players)
-      //not done here...
-      for (var p in gameModel.state.players){
-        startAuction = (startAuction & p.readyUp)
+      //not done here... check if all players have readied up (can only performed by host)
+      for (const [username, playerData] of Object.entries(gameModel.state.players)){
+        console.log(playerData)
+        startAuction = (startAuction & playerData.readyUp)
       }
       console.log('All players ready?:', startAuction)
-      // if (startAuction){
-      //   updateGameState({'status':'inAuction'})
-      // }
+      if (startAuction){
+        updateGameState({
+          'status':'inAuction',
+          'auction_timer': Timestamp.now().seconds})
+          //instantiate the player list and entries list for play-order
+      }
     }
   }
 
@@ -41,7 +46,7 @@ function Entries(){
     if (submissions.length == 3){
       setReadyState(!readyState)
       updateGameState({[`players.${local_player.username}.readyUp`]:!readyState})
-      updateGameState({[`players.${local_player.username}.entires`]:submissions})
+      updateGameState({[`players.${local_player.username}.entries`]:submissions})
     }
     //Logic to post entries and state to firebase doc
   }

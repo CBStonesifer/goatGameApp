@@ -3,11 +3,12 @@ import { doc, setDoc, getDoc, updateDoc, deleteField } from "firebase/firestore"
 
 class Game {
     constructor() {
-        this.game_code = '',
+        this.game_code = String(),
         this.state ={
-            status: '',
-            category: '',
-            host: '',
+            status: Boolean(),
+            category: String(),
+            host: String(),
+            auction_timer: '',
             players: {}
         }
     }
